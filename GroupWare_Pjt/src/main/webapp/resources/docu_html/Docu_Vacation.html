@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#contentmember-btn').click(function(){
+				$('#contentmember').modal('show');	
+			});
+		});
+	</script>
+	 <div class='container'>
+<!-- 결제 제목 -->
+				<div class='row' style='padding-bottom:5px;text-align:center;'>
+					<div class='col-xl-12 col-lg-12 col-md-12'>
+						<h1>휴가 신청서</h1>
+					</div>
+				</div>
+				<!-- 결재라인 / 결재등록 -->
+				<div class='row' style='padding-bottom:5px;text-align:right;'>
+					<div class='col-xl-12 col-lg-12 col-md-12'>
+						<button class="btn btn-success btn-sm" id= 'paymember-btn'>결제라인</button>
+					</div>
+				</div><!-- 결재라인 / 결재등록 -->
+				<!-- 기본 정보 -->
+				<table class='paytable-title table-sm' style='border:1px solid black'>
+					<tbody>	
+						<tr>
+							<th>문서번호</th>
+							<td colspan='5'>
+								<input type='text' class='form-control' id='write_docunum'>
+							</td>							
+						</tr>
+						<!-- 작성일자 -->
+						<tr>
+							<th>작성일자</th>
+							<td colspan='5'>
+								<input type='text' class='form-control' id='write_date'>
+							</td>						
+						</tr><!-- 작성일자 -->
+						<!-- 작성부서 -->
+						<tr>
+							<th>작성부서</th>
+							<td colspan='5' style='padding-left:12px;'>
+								<select id ='write_department' style='border:0px;'>
+								
+								</select>
+							</td>							
+						</tr>
+						<!-- 작성부서 -->
+						<tr><!-- 작성자 -->
+							<th>작성자</th>
+							<td colspan='5'>
+								<input type='text' class='form-control' id='write_writer'>
+							</td>						
+						</tr><!-- 작성자 -->
+						<!-- 결제란 -->
+						<tr id='payname'>
+							<th rowspan='2'>결제란</th>
+							<td class='payname'>전화윤</td>							
+							<td class='payname'></td>							
+							<td class='payname'></td>							
+							<td class='payname'></td>							
+							<td class='payname'></td>			
+						</tr>
+						<tr id='paysign' style='text-align:center;'>
+							<td class='paycheck'></td>						
+							<td class='paycheck'></td>							
+							<td class='paycheck'></td>							
+							<td class='paycheck'></td>							
+							<td class='paycheck'></td>							
+						</tr><!-- 결제란 -->
+						<!-- 제목 -->
+						<tr>
+							<th>제목</th>
+							<td colspan='5'>
+								<input type='text' class='form-control'>
+							</td>							
+						</tr><!-- 제목 -->
+					</tbody>
+				</table><!-- 기본 정보 -->
+				<div class='row' style='padding-top:5px;padding-bottom:5px;text-align:right;'>
+					<div class='col-xl-12 col-lg-12 col-md-12'>
+						
+					</div>
+				</div><!-- 결재라인 / 결재등록 -->
+				<div class='row' style='padding-bottom:5px;text-align:right;'>
+					<div class='col-xl-12 col-lg-12 col-md-12'>
+						<button class="btn btn-success btn-sm" id= 'contentmember-btn' >정보 등록</button>
+					</div>
+				</div><!-- 결재라인 / 결재등록 -->
+				<script>
+                </script> 
+				<table class='paytable table-sm'>
+					<tr>
+						<th style='width:5%'>신청일</th>
+						<th style='width:5%'>종료일</th>
+						<th style='width:5%'>사 유</th>
+						<th style='width:15%'>내 용</th>
+						<th style='width:5%'>직 위</th>
+						<th style='width:5%'>성 명</th>
+					</tr>
+					<tr>
+						<td>
+							<input type='text' class='form-control'>
+						</td>
+						<td>
+							<input type='text' class='form-control'>
+						</td>
+						<td>
+							<select class='form-control'>
+								<option value=''>선택</option>
+								<option value='연차'>연차</option>
+								<option value='경조'>경조</option>
+								<option value='공가'>공가</option>
+								<option value='병가'>병가</option>
+								<option value='특별'>특별</option>
+							</select>
+						</td>
+						<td>
+							<input type='text' class='form-control'>
+						</td>
+						<td>
+							<select class='form-control'>
+								<option value=''>선택</option>
+								<option value='이사장'>이사장</option>
+								<option value='센터장'>센터장</option>
+								<option value='과장'>과장</option>
+								<option value='사원'>사원</option>
+							</select>
+						</td>
+						<td>
+							<input type='text' class='form-control'>
+						</td>
+					</tr>
+					<tr>
+						<td class='text-center' colspan='6' style='font-size:20px;padding-top:50px;padding-bottom:50px;'>
+						
+						</td>
+					</tr>
+				</table>
+				<div class='row' style='padding-top:5px;padding-bottom:5px;text-align:center;'>
+					<div class='col-xl-12 col-lg-12 col-md-12'>
+						<a href='#' class='text-light btn btn-warning' id='writing-btn'> 결제등록</a>
+					</div>
+				</div><!-- 결재라인 / 결재등록 -->
+			</div>
+			
+<!-- Modal 인사정보 등록 -->
+<div class="modal fade bd-content-modal-lg" id='contentmember' tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    	<div class='row' style='padding-left:15px;padding-right:15px;'>
+	    	<div class='col-xl-2 col-lg-3 col-md-4' style='padding-left:0px;padding-right:0px;background-color:#2e353d;'>
+				<div class="nav-side-menu">
+					    <div class="brand">사원정보</div>
+					    <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#member-list"></i>
+					    <div class="menu-list">
+						    <ul id="member-content" class="member-content collapse out">
+						    	 <li>
+				                	<a href="notice_List.no">
+				                 	<i class="fa fa-user fa-lg"></i> 공지사항
+				                 	</a>
+				                </li><!-- 공지사항 -->
+						    </ul>
+						</div>
+				</div>
+			</div>
+			<!-- 인사 내용 시작 -->
+			<div class='main col-xl-10 col-lg-9 col-md-8' id='member-select' style='height:600px;'>
+				<div class='alert alert-success' role='alert'><!-- Head Title -->
+					<h4 class='alert-heading'> 인사 목록</h4>
+					<p><small>원하시는 담당자 , 해당직원을 선택해주세요.</small>		
+				</div><!-- Head Title -->
+				<div class='col-12 text-danger'><i class='fa fa-user fa-lg'></i> 소속 인사</div>
+				<div class='col-xl-12' id='' style='padding-left:0px;padding-right:0px;height:200px;overflow-y:scroll;border:1px solid silver;'>
+					<table class='table table-striped table-sm' id='group-list'>
+						<thead>
+							<tr>
+								<th style='width:3%'></th>
+								<th style='width:6%'>소속부서</th>
+								<th style='width:6%'>직급</th>
+								<th style='width:5%'>사원명</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div><!-- 결재라인 / 결재등록 -->
+				<div class='col-xl-12 text-success'style='padding-top:10px;'><i class='fa fa-user fa-lg'></i> 선택 목록</div>
+					<!-- 추가된 인사 목록 -->
+				<div class='col-xl-12' id='' style='padding-left:0px;padding-right:0px;height:150px;border:1px solid silver;'>
+					<select multiple class='form-control' id='add-content' style='height:100%;'>
+					</select>
+				</div>
+				<div class='col-xl-12 col-lg-12 col-md-12'>
+					<div class='text-danger'><small>Ctrl + 선택 다중 선택이 가능합니다.</small></div>
+				</div>
+				<div class='col-xl-12 col-lg-12 col-md-12'>
+					<div class='row'>
+						<div class='col-6'>
+							<button class="btn btn-danger btn-sm" id= 'member-delete'>선택목록 삭제</button>
+						</div>
+						<div class='col-6 text-right'>
+							<button class="btn btn-warning btn-sm" id= 'payment-add'>결제자 등록</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 인사목록 -->
+		</div>
+    </div>
+  </div>
+</div><!-- Modal -->
+</body>
+</html>

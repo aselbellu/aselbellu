@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.group.member.dao.MemberDao">
+	<select id="memberLogin" resultType='com.group.person.dto.PersonDto'>
+		SELECT EMPNUM,PERSON_ID,NAME_KOR,PERSON_ACCOUNT,PERSON_ACCESS,DEPARTMENT,PHOTO_PERSON,POSITION
+		FROM GROUP_PERSON
+		WHERE PERSON_ID = #{param1} AND PERSON_PW = #{param2}
+	</select>
+</mapper>

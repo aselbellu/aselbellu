@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.group.docu.dao.DocuDao">
+	<select id="docuCount">
+		SELECT COUNT(*)+1 DOCNUM
+		FROM GROUP_DOCUMENT
+	</select>
+	<select id="docuDepartCount" resultType="String" parameterType="String">
+		SELECT MAX(DOC_DEPARTMENTNUM) DOC_DEPARTMENTNUM
+		FROM GROUP_DOCUMENT
+		<if test='department != null and department != ""'>
+		WHERE DOC_DEPARTMENT = #{param1}
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<style>
+.vacation-table {
+	border: 1px solid black;
+}
+
+.vacation-table td, .vacation-table thead th {
+	border: 1px solid black;
+	text-align: center;
+}
+
+.modal-body {
+	padding: 0px;
+}
+</style>
+	<script>
+		$(document).ready(function() {
+			
+			// 휴가대상 등록 버튼 이벤트
+			$(document).on("click", "#example-Btn", function() {
+				var tempList = part_List();
+				var tempAppend = "";
+				
+				for (var i = 0; i < tempList.length ; i++){
+					tempAppend += "<li class='vacationGroup'>"
+								 +"	<a href=''><i class='fa fa-folder-o' aria-hidden='true'></i> "+tempList[i].department+"</a>"
+								 +"</li>"
+				}
+				$('#members-content li').remove();	//기존정보삭제
+				$('#members-content').append(tempAppend);
+				$('#vacation-Modal').modal();
+			});
+			
+			// 부서의 포함된 사원 SelectBox List
+			$(document).on("click", ".vacationGroup", function(){
+				var tempMembers = member_List($(this).text());
+				var tempAppend = "<option value=''>선택</option>";
+				for( var i = 0 ; i < tempMembers.length ; i++){
+					tempAppend += "<option value='"+tempMembers[i].empnum+"'>"+tempMembers[i].department+" / "+tempMembers[i].position+" / "+tempMembers[i].name_KOR+"</option>"
+				}
+				$('#groupMembers').html(tempAppend);
+				return false;
+			});
+			
+			// 추가사원 변경 시 Input Box 데이터 변경
+			$(document).on("change","#groupMembers",function(){
+				var tempEmpnum = $('#groupMembers').val();
+				var tempMemberInfo, tempPosition, tempDepartment, tempNameKor  = "";
+				
+				if (tempEmpnum == ''){
+					alert('사원을 선택해주세요');
+				} else {
+					tempMemberInfo = member_Info(tempEmpnum);
+					tempPosition = tempMemberInfo.position;
+					tempDepartment = tempMemberInfo.department;
+					tempNameKor = tempMemberInfo.name_KOR;
+				}
+				
+				$('#position').val(tempPosition);
+				$('#department').val(tempDepartment);
+				$('#name-kor').val(tempNameKor);
+			});
+			
+			// 등록 Btn 클릭 이벤트
+			$(document).on("click","#insert-Btn",function(){
+				var tempAppend = "";
+                if ($('#position').val() == ''){
+					alert('부서를 선택해주세요.');
+				} else if ($('#department').val() == ''){
+					alert('직위를 선택해주세요.');
+				} else if ($('#name-kor').val() == ''){
+                    alert('성명을 선택해주세요.');
+                } else if ($('#startDate').val() == ''){
+                    alert('신청일을 지정해주세요');
+                } else if ($('#endDate').val() == ''){
+                    alert('종료일을 지정해주세요');
+                } else if ($('#reason').val() == ''){
+                    alert('사유를 입력해주세요');
+                } else {
+                    tempAppend = "<tr>"
+                    			+"<td>"+$('#startDate').val()+"</td>"
+                                +"<td>"+$('#endDate').val()+"</td>"
+                                +"<td>"+$('#reason').val()+"</td>"
+                                +"<td>"+$('#department').val()+"</td>"
+                                +"<td>"+$('#position').val()+"</td>"
+                                +"<td>"+$('#name-kor').val()+"</td>"
+                                +"</tr>"
+                                +"<tr style='height:200px; font-size:20px;'>"
+                                +"<td colspan='6' style='vertical-align:middle;'>위와 같이 "+$('#position').val()+" "+$('#name-kor').val()+"의 휴가를 신청합니다.</td>"
+                                +"</tr>"
+                                ;
+                    $('.vacation-table tbody').html(tempAppend);
+                    $('#vacation-Modal').modal('hide');
+                }
+			});
+		});
+	</script>
+	<!-- Container -->
+	<div class='container-fluid'>
+		<div class='row' style='padding-bottom: 5px; text-align: right;'>
+			<div class='col-xl-12 col-lg-12 col-md-12'>(기안서)</div>
+		</div>
+		<div class='row' style='padding-bottom: 5px; text-align: center;'>
+			<div class='col-xl-12 col-lg-12 col-md-12'>
+				<h1>휴가 신청서</h1>
+			</div>
+		</div>
+		<div class='row' style='padding-bottom: 5px; text-align: right;'>
+			<div class='col-xl-12 col-lg-12 col-md-12'>
+				<button class='btn btn-danger btn-sm' id='pay-Btn'>결제선 등록</button>
+			</div>
+		</div>
+		<table class='pay-table table table-sm'>
+			<tbody>
+				<tr>
+					<th>문서번호</th>
+					<td colspan="5"><input type="text" class="form-control" id='pay-WriteDocuNum'>
+					</td>
+				</tr>
+				<tr>
+					<th>작성일</th>
+					<td colspan="5">
+						<input type="text" class="form-control" id='pay-WriteDate'>
+					</td>
+				</tr>
+				<tr>
+					<th>작성부서</th>
+					<td colspan="5">
+						<input class='form-control' id='pay-WriteDepart'>
+					</td>
+				</tr>
+				<tr class='pay-Name'>
+					<th rowspan="2">결제자</th>
+					<td>전화윤</td>
+					<td>전화윤</td>
+					<td>전화윤</td>
+					<td>전화윤</td>
+					<td>전화윤</td>
+				</tr>
+				<tr class='pay-Sign'>
+					<td>사인</td>
+					<td>사인</td>
+					<td>사인</td>
+					<td>사인</td>
+					<td>사인</td>
+				</tr>
+				<tr>
+					<th>제 목</th>
+					<td colspan="5">
+						<input type="text" class="form-control">
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class='row' style='padding-bottom: 5px; text-align: right;'>
+			<div class='col-xl-12 col-lg-12 col-md-12'>
+				<button class='btn btn-danger btn-sm' id='example-Btn'>휴가대상
+					등록</button>
+			</div>
+		</div>
+		<table class="vacation-table table table-sm">
+			<thead>
+				<tr>
+					<th style="width: 5%">신청일</th>
+					<th style="width: 5%;">종료일</th>
+					<th style='width: 15%;'>사유</th>
+					<th style='width: 5%;'>부서</th>
+					<th style="width: 5%;">직위</th>
+					<th style="width: 5%;">성명</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<div class='row' style='padding-bottom: 5px; text-align: center;'>
+			<div class='col-xl-12 col-lg-12 col-md-12'>
+				<button class='btn btn-success'>결제등록</button>
+			</div>
+		</div>
+	</div>
+	<!-- End Container -->
+	<!-- 휴가대상자 등록 Modal -->
+	<div class="modal fade" id="vacation-Modal">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<!-- Modal Contents -->
+				<div class="modal-body">
+					<div class='container-fluid'>
+						<div class='row'>
+							<div class='col-xl-2 col-lg-3 col-md-4'	style='padding-right:0px; padding-left:0px; background-color:#2e353d;'>
+								<div class="nav-side-menu">
+									<div class="brand">사원선택</div>
+									<i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse"
+										data-target="#members-content"></i>
+									<div class="menu-list">
+										<ul id="members-content" class="menu-content collapse out">
+											<!-- 결제 정보 -->
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class='col-xl-10 col-lg-9 col-md-8' style="min-height: 400px; padding-left: 0px; padding-right: 0px">
+								<div class='alert alert-success' role='alert'>
+									<h4 class='alert-heading'>본문 작성</h4>
+									<p>
+										<small>휴가 기간 / 사유 / 사원을 입력합니다.</small>
+								</div>
+								<!-- Head Title -->
+								<!-- 사원 정보 -->
+								<div class="card card-outline-default">
+									<div class='card-header card-default'>
+										<i class="fa fa-user-circle-o" aria-hidden="true"></i> 사원정보
+									</div>
+									<div class='card-block'>
+										<div class='row'>
+											<div class='col-xl-12 col-lg-12 col-md-12'>
+												<div class="form-group text-danger">
+													<label><b>사원목록</b> </label>
+													<div class="input-group input-group-sm">
+														<select class='form-control' id='groupMembers'>
+														
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class='row'>
+											<div class='col-xl-4 col-lg-4 col-md-6'>
+												<div class="form-group text-danger">
+													<label><b>부서</b></label>
+													<div class="input-group input-group-sm">
+														<input type="text" id='department' class="modalInput form-control"	readonly="readonly">
+													</div>
+												</div>
+											</div>
+											<div class='col-xl-4 col-lg-4 col-md-6'>
+												<div class="form-group text-danger">
+													<label>직위</label>
+													<div class="input-group input-group-sm">
+														<input type="text" id='position' class="modalInput form-control" readonly="readonly">
+													</div>
+												</div>
+											</div>
+											<div class='col-xl-4 col-lg-4 col-md-6'>
+												<div class="form-group text-danger">
+													<label>성명</label>
+													<div class="input-group input-group-sm">
+														<input type="text" id='name-kor' class="modalInput form-control"	readonly="readonly">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- 사원 정보 -->
+								<!-- 신청 정보 -->
+								<div class="card card-outline-default">
+									<div class='card-header card-default'>신청일 / 종료일 / 사유</div>
+									<div class='card-block'>
+										<div class='row'>
+											<div class='col-xl-6 col-lg-6 col-md-6'>
+												<div class="form-group text-danger">
+													<label><b><i class="fa fa-calendar-check-o"	aria-hidden="true"></i> 신청일</b> </label>
+													<div class="input-group input-group-sm">
+														<input type="text" class="modalInput form-control" id='startDate'>
+														<span class="input-group-btn">
+															<button class="btn btn-success" type="button">
+																<i class="fa fa-calendar" aria-hidden="true"></i>
+															</button>
+														</span>
+													</div>
+												</div>
+											</div>
+											<div class='col-xl-6 col-lg-6 col-md-6'>
+												<div class="form-group text-danger">
+													<label class='forLabel'><b><i class="fa fa-calendar-check-o" aria-hidden="true"></i> 종료일</b> </label>
+													<div class="input-group input-group-sm">
+														<input type="text" class="modalInput form-control" id='endDate'>
+														<span class="input-group-btn">
+															<button class="btn btn-success" type="button">
+																<i class="fa fa-calendar" aria-hidden="true"></i>
+															</button>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class='row'>
+											<div class='col-xl-12 col-lg-12 col-md-12'>
+												<div class="form-group text-danger">
+													<label><b><i class="fa fa-calendar-check-o"
+															aria-hidden="true"></i> 휴가 사유</b> </label>
+													<div class="input-group input-group-sm">
+														<input type="text" class="modalInput form-control" id='reason'>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class='row'>
+											<div class='col-xl-12 col-lg-12 col-md-12 text-right'>
+												<button class='btn btn-danger btn-sm' id='insert-Btn'>등록</button>
+											</div>
+										</div>
+									</div>
+									<!-- 신청 정보 -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><!-- 결제자 등록 Modal End-->
+</body>
+</html>

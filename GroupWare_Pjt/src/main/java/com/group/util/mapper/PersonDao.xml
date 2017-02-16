@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.group.person.dao.PersonDao">
+	<select id="personCount" resultType="int">
+		SELECT COUNT(EMPNUM) EMPNUM 
+		FROM GROUP_PERSON
+	</select>
+	
+	<select id="personListCount" resultType="int" parameterType="com.group.person.dto.PersonDto">
+		SELECT COUNT(EMPNUM) EMPNUM 
+		FROM GROUP_PERSON
+		<if test="SEARCHOPTION == 'NAME_KOR'">WHERE NAME_KOR = #{SEARCHVALUE}</if>
+		<if test="SEARCHOPTION == 'POSITION'">WHERE POSITION = #{SEARCHVALUE}</if>
+	</select>
+	
+	<!-- 인사등록 -->
+	<insert id="personInsert">
+		INSERT INTO GROUP_PERSON
+		VALUES(#{EMPNUM},#{PERSON_ID},#{PERSON_PW},#{NAME_KOR},#{NAME_ENG},#{SSN_FRONT},
+			   #{SSN_BACK},#{MARRIAGE},#{CHILDREN},#{POSITION},#{DEPARTMENT},#{WORKTYPE},
+			   #{GENDER},#{CONTACT},#{EMAIL},#{ZIPCODE},#{ADDR},#{PHOTO_PERSON},#{PHOTO_LICENSE},
+			   #{PERSON_ACCOUNT},#{PERSON_ACCESS})
+	</insert>
+	
+	<!-- 상세 정보 -->
+	<select id="personDetail" resultType="com.group.person.dto.PersonDto">
+		SELECT * FROM GROUP_PERSON
+		WHERE EMPNUM = #{param1}
+	</select>
+	
+	<!-- 정보 수정 -->
+	<update id="personUpdate" parameterType="com.group.person.dto.PersonDto">
+		UPDATE GROUP_PERSON
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="NAME_KOR != ''">NAME_KOR = #{NAME_KOR},</if>
+			<if test="NAME_ENG != ''">NAME_ENG = #{NAME_ENG},</if>
+			<if test="SSN_FRONT != ''">SSN_FRONT = #{SSN_FRONT},</if>
+			<if test="SSN_BACK != ''">SSN_BACK = #{SSN_BACK},</if>
+			<if test="MARRIAGE != ''">MARRIAGE = #{MARRIAGE},</if>
+			<if test="CHILDREN != ''">CHILDREN = #{CHILDREN},</if>
+			<if test="POSITION != ''">POSITION = #{POSITION},</if>
+			<if test="DEPARTMENT != ''">DEPARTMENT = #{DEPARTMENT},</if>
+			<if test="WORKTYPE != ''">WORKTYPE = #{WORKTYPE},</if>
+			<if test="GENDER != ''">GENDER = #{GENDER},</if>
+			<if test="CONTACT != ''">CONTACT = #{CONTACT},</if>
+			<if test="EMAIL != ''">EMAIL = #{EMAIL},</if>
+			<if test="ZIPCODE != ''">ZIPCODE = #{ZIPCODE},</if>
+			<if test="ADDR != ''">ADDR = #{ADDR},</if>
+			<if test="PHOTO_PERSON != null">PHOTO_PERSON = #{PHOTO_PERSON},</if>
+			<if test="PHOTO_LICENSE != null">PHOTO_LICENSE = #{PHOTO_LICENSE},</if>
+			<if test="PERSON_ACCESS != ''">PERSON_ACCESS = #{PERSON_ACCESS},</if>
+			<if test="PERSON_ACCOUNT != ''">PERSON_ACCOUNT = #{PERSON_ACCOUNT},</if>
+		</trim>
+		WHERE EMPNUM = #{EMPNUM}
+	</update>
+	
+	<!-- 정보 삭제 -->
+	<delete id="personDelete">
+		DELETE GROUP_PERSON WHERE EMPNUM = #{param1}
+	</delete>
+	
+	<select id="personList" parameterType="hashmap" resultType="com.group.person.dto.PersonDto">
+		SELECT * FROM (
+                SELECT ROWNUM RNUM, EMPNUM, NAME_KOR, POSITION, DEPARTMENT, ADDR, CONTACT, EMAIL 
+                FROM (
+                		SELECT  * FROM GROUP_PERSON ORDER BY EMPNUM DESC
+                     )
+                <if test="SEARCHOPTION == 'NAME_KOR'">
+                WHERE NAME_KOR = #{SEARCHVALUE}
+                </if>
+                <if test="SEARCHOPTION == 'POSITION'">
+                WHERE POSITION = #{SEARCHVALUE}
+                </if>
+             ) 
+        <![CDATA[
+        WHERE RNUM >= #{STARTROW} AND RNUM <= #{ENDROW}
+        ]]>
+	</select>
+	
+	<select id="personDepartMentList" resultType="com.group.person.dto.PersonDto">
+		SELECT DISTINCT DEPARTMENT
+		FROM GROUP_PERSON
+	</select>
+	
+	<select id='personGroupList' resultType="com.group.person.dto.PersonDto">
+		SELECT EMPNUM,NAME_KOR,POSITION,DEPARTMENT 
+		FROM GROUP_PERSON 
+		WHERE DEPARTMENT= #{param1}
+	</select>
+</mapper>
